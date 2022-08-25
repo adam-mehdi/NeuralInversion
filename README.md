@@ -1,4 +1,4 @@
-# <p style="text-align:center;"> <img src="neural-inversion-logo.png" width="250" height="200"> </p>
+<center> <img src="neural-inversion-logo.png" width="250" height="200"> </center>
 
 `NeuralInversion` approximates the inversion of neural networks. It currently implements inversion 
 for StyleGAN, meaning it can take in an image and find the feature vector in StyleGAN latent space with 
@@ -13,7 +13,7 @@ descent by optimizing $x$. Now pass the new $x$ into $F$ again, and repeat the o
 
 The problem with this OBI procedure is that the optimization is unstable: The StyleGan $F$ was designed to optimize its parameters, not its input. 
 Hence, Liu et al. provide a method to stabilize optimization by smoothing the loss landscape in "Landscape Learning for Neural Network Inversion".
-They do this by training another neural network $\theta: Z\rightarrow X$ that predict the input vector $x \in X$ using a vector from another space $z \in Z$
+They do this by training another neural network $ \theta: Z \rightarrow X$ that predict the input vector $x \in X$ using a vector from another space $z \in Z$
 with a smooth loss landscape. The mapping network $\theta$ is trained to minimize the loss $L(F(\theta(z_t)), y)$ where $t\in T$. $^3$ From this training,
 $\theta$ learns patterns in the optimization trajectories of $X$ and can act to stabilize them, learning a loss landscape where gradient descent is efficient, 
 and accelerating the inversion process.
