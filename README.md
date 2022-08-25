@@ -1,6 +1,7 @@
+# NeuralInversion
 <center> <img src="neural-inversion-logo.png" width="250" height="200"> </center>
 
-`NeuralInversion` approximates the inversion of neural networks. It currently implements inversion 
+`NeuralInversion` approximates the inverse of neural networks. It currently implements inverse 
 for StyleGAN, meaning it can take in an image and find the feature vector in StyleGAN latent space with 
 which it corresponds. 
 
@@ -13,7 +14,7 @@ descent by optimizing $x$. Now pass the new $x$ into $F$ again, and repeat the o
 
 The problem with this OBI procedure is that the optimization is unstable: The StyleGan $F$ was designed to optimize its parameters, not its input. 
 Hence, Liu et al. provide a method to stabilize optimization by smoothing the loss landscape in "Landscape Learning for Neural Network Inversion".
-They do this by training another neural network $ \theta: Z \rightarrow X$ that predict the input vector $x \in X$ using a vector from another space $z \in Z$
+They do this by training another neural network that predict the input vector $x \in X$ using a vector from another space $z \in Z$
 with a smooth loss landscape. The mapping network $\theta$ is trained to minimize the loss $L(F(\theta(z_t)), y)$ where $t\in T$. $^3$ From this training,
 $\theta$ learns patterns in the optimization trajectories of $X$ and can act to stabilize them, learning a loss landscape where gradient descent is efficient, 
 and accelerating the inversion process.
@@ -44,7 +45,7 @@ If you already have pretrained weights for the mapping network, run the followin
 python src/eval.py
 ```
 
-The pretrained weights for the StyleGAN $F$ are available in this [google drive](). 
+The pretrained weights for the StyleGAN $F$ are available in this [google drive](https://drive.google.com/drive/folders/1Qn5RtRdOuhA3eLsBGppTNx9v4zLZFRru?usp=sharing). 
 Weights for $\theta$ are also available there, but note from $^3$ that they are not fully pretrained.
 
 You will see the output images in the `output` directory.
@@ -60,8 +61,27 @@ such as AlexNet to classify the semantic similarity between two images. See my a
 [3] Precisely, this entails first collecting together optimization trajectories into a buffer $B := \{\{z\}_{t=1}^T\}_{i=1}^N$ where $T$ is the number of optimization steps and $N$ is the number of data samples in a buffer, and where $z_{t, i} = z_{t-1, i} + \alpha\frac{\partial L}{\partial x_i}$. Then, iteratively sample a vector $z_{i, t}$ and minimize $L(F(\theta(z_{i,t})), y_i)$ by performing gradient descent on each weight $w$ of $\theta$, $w_{t, i} = x_{t-1, i} + \alpha\frac{\partial L}{\partial w_i}$, repeating until convergence.
 
 [4] The mapping network $\theta$ was only trained on 10 images. 
-Liu et al. trained the mapping network on a 4-GPU cluster with at batch size of 256, but I was only able to support a batch 
-size of 1 on my local resources.
+Liu et al. trained the mapping network on a 4-GPU cluster with 256 data samples per buffer, but I was only able to support 
+around 4 samples per buffer on my local resources.
+
+## Preliminary Results
+
+Using the pretrained weights for the StyleGAN linked above in the Google Drive. mapping network and  
+
+Take the following input image of the blonde supermodel (image from the CelebA-HQ dataset).
+
+<img src="data/1.jpg" width=250> 
+
+If you use `NeuralInvert` to find a latent vector $z$ that corresponds with it, and then you
+pass $z$ back into the StyleGAN, you get the following image.
+
+<img src="output/image-output0-version0.png" width=250> 
+
+Make what you will of the correspondence between the two images (looks a little like a chubby middle-school
+version of the supermodel), but if you want better performance, train the mapping network for longer on a 
+dataset of images. One good source of images is the (CelebAMask dataset)
+
+[http://mmlab.ie.cuhk.edu.hk/projects/CelebA/CelebAMask_HQ.html#:~:text=CelebAMask%2DHQ%20is%20a%20large,facial%20attributes%20corresponding%20to%20CelebA).
 
 ## What it implemented
 ```
