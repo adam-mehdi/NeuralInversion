@@ -1,5 +1,4 @@
-# <img src="neural-inversion-logo.png" width="100" height="100"> NeuralInversion
-<div></div>
+# <p style="text-align:center;"> <img src="neural-inversion-logo.png" width="250" height="200"> </p>
 
 `NeuralInversion` approximates the inversion of neural networks. It currently implements inversion 
 for StyleGAN, meaning it can take in an image and find the feature vector in StyleGAN latent space with 
@@ -9,13 +8,13 @@ which it corresponds.
 
 To do invert neural networks, `NeuralInversion` uses a modified version of *optimizer-based inference* (OBI). OBI calculates the inverse mapping as follows. 
 Given an image $y$, initialize a latent vector $x$ and pass it through the pretrained StyleGAN $F$ to compute 
-the loss $L(F(x), y)$.$^1$ Take the partial derivatives of $L$ *with respect to $x$* and minimize $L$ using gradient 
-descent by optimizing $x$. Now pass the new $x$ into $F$ again, and repeat the optimization process for a number of times $T$ (usually $T=20$).$^2$
+the loss $L(F(x), y)$. $^1$ Take the partial derivatives of $L$ with respect to $x$ and minimize $L$ using gradient 
+descent by optimizing $x$. Now pass the new $x$ into $F$ again, and repeat the optimization process for a number of times $T$ (usually $T=20$). $^2$
 
 The problem with this OBI procedure is that the optimization is unstable: The StyleGan $F$ was designed to optimize its parameters, not its input. 
 Hence, Liu et al. provide a method to stabilize optimization by smoothing the loss landscape in "Landscape Learning for Neural Network Inversion".
 They do this by training another neural network $\theta: Z\rightarrow X$ that predict the input vector $x \in X$ using a vector from another space $z \in Z$
-with a smooth loss landscape. The mapping network $\theta$ is trained to minimize the loss $L(F(\theta(z_t)), y)$ where $t\in T$.$^3$ From this training,
+with a smooth loss landscape. The mapping network $\theta$ is trained to minimize the loss $L(F(\theta(z_t)), y)$ where $t\in T$. $^3$ From this training,
 $\theta$ learns patterns in the optimization trajectories of $X$ and can act to stabilize them, learning a loss landscape where gradient descent is efficient, 
 and accelerating the inversion process.
 
