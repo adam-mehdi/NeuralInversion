@@ -1,4 +1,4 @@
-# NeuralInversion
+# `NeuralInversion`
 <center> <img src="neural-inversion-logo.png" width="200" height="150"> </center>
 
 `NeuralInversion` approximates the inverse of neural networks. It currently implements inverse 
