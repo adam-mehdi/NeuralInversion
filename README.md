@@ -1,8 +1,8 @@
 # NeuralInversion
-<center> <img src="neural-inversion-logo.png" width="250" height="200"> </center>
+<center> <img src="neural-inversion-logo.png" width="200" height="150"> </center>
 
 `NeuralInversion` approximates the inverse of neural networks. It currently implements inverse 
-for StyleGAN, meaning it can take in an image and find the feature vector in StyleGAN latent space with 
+for StyleGAN, meaning it can take an image and find the feature vector in StyleGAN latent space with 
 which it corresponds. 
 
 ## What it does
@@ -11,6 +11,7 @@ To do invert neural networks, `NeuralInversion` uses a modified version of *opti
 Given an image $y$, initialize a latent vector $x$ and pass it through the pretrained StyleGAN $F$ to compute 
 the loss $L(F(x), y)$. $^1$ Take the partial derivatives of $L$ with respect to $x$ and minimize $L$ using gradient 
 descent by optimizing $x$. Now pass the new $x$ into $F$ again, and repeat the optimization process for a number of times $T$ (usually $T=20$). $^2$
+
 
 The problem with this OBI procedure is that the optimization is unstable: The StyleGan $F$ was designed to optimize its parameters, not its input. 
 Hence, Liu et al. provide a method to stabilize optimization by smoothing the loss landscape in "Landscape Learning for Neural Network Inversion".
@@ -66,7 +67,7 @@ around 4 samples per buffer on my local resources.
 
 ## Preliminary Results
 
-Using the pretrained weights for the StyleGAN linked above in the Google Drive. mapping network and  
+Using the pretrained weights for the StyleGAN linked above in the Google Drive.
 
 Take the following input image of the blonde supermodel (image from the CelebA-HQ dataset).
 
@@ -77,30 +78,29 @@ pass $z$ back into the StyleGAN, you get the following image.
 
 <img src="output/image-output0-version0.png" width=250> 
 
-Make what you will of the correspondence between the two images (looks a little like a chubby middle-school
-version of the supermodel), but if you want better performance, train the mapping network for longer on a 
-dataset of images. One good source of images is the (CelebAMask dataset)
+Make what you will of the correspondence between the two images (maybe you're thinking she looks like a chubby middle-school
+version of the supermodel; imagine what NeuralInversion will make of us mere mortals!). Nevertheless, if you want better performance, train the mapping network for longer on a 
+dataset of images. One good source of images is the [CelebAMask dataset](http://mmlab.ie.cuhk.edu.hk/projects/CelebA/CelebAMask_HQ.html#:~:text=CelebAMask%2DHQ%20is%20a%20large,facial%20attributes%20corresponding%20to%20CelebA).
 
-[http://mmlab.ie.cuhk.edu.hk/projects/CelebA/CelebAMask_HQ.html#:~:text=CelebAMask%2DHQ%20is%20a%20large,facial%20attributes%20corresponding%20to%20CelebA).
-
-## What it implemented
+## Resources and References
 ```
 @misc{https://doi.org/10.48550/arxiv.2206.09027,
   doi = {10.48550/ARXIV.2206.09027},
-
   url = {https://arxiv.org/abs/2206.09027},
-  
   author = {Liu, Ruoshi and Mao, Chengzhi and Tendulkar, Purva and Wang, Hao and Vondrick, Carl},
-  
   keywords = {Computer Vision and Pattern Recognition (cs.CV), Machine Learning (cs.LG), FOS: Computer and information sciences, FOS: Computer and information sciences},
-  
   title = {Landscape Learning for Neural Network Inversion},
-  
   publisher = {arXiv},
-  
   year = {2022},
-  
   copyright = {arXiv.org perpetual, non-exclusive license}
 }
+
+@inproceedings{CelebAMask-HQ,
+  title = {MaskGAN: Towards Diverse and Interactive Facial Image Manipulation},
+  author = {Lee, Cheng-Han and Liu, Ziwei and Wu, Lingyun and Luo, Ping},
+  booktitle = {IEEE Conference on Computer Vision and Pattern Recognition (CVPR)},
+  year = {2020}
+}
+
 ```
 Pretrained weights for the StyleGAN were obtained in an [Image2StyleGAN repository](https://github.com/zaidbhat1234/Image2StyleGAN).
