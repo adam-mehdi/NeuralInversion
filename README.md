@@ -50,7 +50,7 @@ Weights for the mapping network are also available there, but note that they are
 When the `eval.py` script is completed, you will see the output images in the `output` directory.
 
 ## Technical Notes
-**[1]** The loss used here is as follows.
+**[1]** The loss function used here is as follows.
 
 $$L(\hat{y}, y) := \frac{1}{volume(y)} \cdot SquaredEuclideanDistance(\hat{y}, y) + LearnedPerceptualImagePatchSimilarity(\hat{y}, y)$$
 
