@@ -7,7 +7,7 @@ which it corresponds.
 
 ## What it does
 
-To do invert neural networks, `NeuralInversion` uses a modified version of *optimizer-based inference* (OBI). OBI calculates the inverse mapping as follows. 
+To invert neural networks, `NeuralInversion` uses a modified version of *optimizer-based inference* (OBI). OBI calculates the inverse mapping as follows. 
 Given an image $y$, initialize a latent vector $x$ and pass it through the pretrained StyleGAN $F$ to compute 
 the loss $L(F(x), y)$. $^1$ Take the partial derivatives of $L$ with respect to $x$ and minimize $L$ using gradient 
 descent by optimizing $x$. Now pass the new $x$ into $F$ again, and repeat the optimization process for a number of times $T$ (usually $T=20$). $^2$ 
@@ -44,7 +44,7 @@ If you already have pretrained weights for the mapping network, run the followin
 python src/eval.py
 ```
 
-The pretrained weights for the StyleGAN are available in this [google drive](https://drive.google.com/drive/folders/1Qn5RtRdOuhA3eLsBGppTNx9v4zLZFRru?usp=sharing). 
+The pretrained weights for the StyleGAN are available in this [Google Drive folder](https://drive.google.com/drive/folders/1Qn5RtRdOuhA3eLsBGppTNx9v4zLZFRru?usp=sharing). 
 Weights for the mapping network are also available there, but note that they are not fully pretrained; they have been trained on around 10 images.
 
 When the `eval.py` script is completed, you will see the output images in the `output` directory.
@@ -52,7 +52,7 @@ When the `eval.py` script is completed, you will see the output images in the `o
 ## Technical Notes
 **[1]** The loss used here is as follows.
 
-$$L(\hat{y}, y) := \frac{1}{volume(y)} \times SquaredEuclideanDistance(\hat{y}, y) + LearnedPerceptualImagePatchSimilarity(\hat{y}, y)$$
+$$L(\hat{y}, y) := \frac{1}{volume(y)} \cdot SquaredEuclideanDistance(\hat{y}, y) + LearnedPerceptualImagePatchSimilarity(\hat{y}, y)$$
 
 Here, both the predictions and targets are images with shape `N, 3, 1024, 1024` where `N` is the batch size. 
 * `SquaredEuclideanDistance` measures how far apart corresponding pixel values are. 
